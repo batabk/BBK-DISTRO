@@ -11,6 +11,7 @@ import { DashboardLayout } from "./pages/dashboard/DashboardLayout";
 import { DashboardHome } from "./pages/dashboard/DashboardHome";
 import { Profile } from "./pages/dashboard/Profile";
 import { NewRelease } from "./pages/dashboard/NewRelease";
+import { Analytics } from "./pages/dashboard/Analytics";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardHome />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="analytics" element={<Analytics />} />
           <Route path="releases/new" element={<NewRelease />} />
         </Route>
       </Routes>

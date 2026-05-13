@@ -14,7 +14,7 @@ export function getStripe(): Stripe {
     }
     // Using a typed but safely generic API version setup
     stripeClient = new Stripe(key, {
-      apiVersion: '2025-02-24.acacia', // Or another recent valid apiVersion string
+      apiVersion: '2026-04-22.dahlia', // Updated to match expected type
     });
   }
   return stripeClient;

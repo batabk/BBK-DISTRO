@@ -133,6 +133,10 @@ export function NewRelease() {
                                         <option value="Hip Hop">Hip Hop</option>
                                         <option value="Alternative">Alternative</option>
                                         <option value="Pop">Pop</option>
+                                        <option value="Rock">Rock</option>
+                                        <option value="Jazz">Jazz</option>
+                                        <option value="RnB">RnB</option>
+                                        <option value="Classical">Classical</option>
                                      </select>
                                  </div>
                                  <div>

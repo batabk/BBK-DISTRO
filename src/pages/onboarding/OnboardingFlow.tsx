@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, Music, Wallet, ArrowRight, ArrowLeft } from 'lucide-react';
+import { ShieldCheck, Music, Wallet, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
+import { updateProfile } from '../../lib/profile';
+import { supabase } from '../../lib/supabase';
 
 export function OnboardingFlow() {
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -22,12 +25,28 @@ export function OnboardingFlow() {
   const handleNext = () => setStep(prev => prev + 1);
   const handleBack = () => setStep(prev => prev - 1);
 
-  const simulateStripeConnect = () => {
-    // In production, this would call a server-side route to generate a Stripe Account Link
-    // For this prototype, we simulate network request then complete onboarding.
-    setTimeout(() => {
-      navigate('/dashboard');
-    }, 1500);
+  const completeOnboarding = async () => {
+    setIsSubmitting(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      await updateProfile(user.id, {
+        stage_name: formData.stageName,
+        real_name: formData.realName,
+        bio: formData.bio,
+        spotify_uri: formData.spotifyUri,
+        instagram: formData.instagram,
+      });
+
+      // Simulate network delay for effect
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1000);
+    } catch (error) {
+      console.error('Failed to save profile during onboarding:', error);
+      setIsSubmitting(false);
+    }
   };
 
   const formVariants = {
@@ -184,10 +203,18 @@ export function OnboardingFlow() {
                       To receive your royalties seamlessly, you must connect a bank account via Stripe. BBK DISTRO does not store your banking details.
                     </p>
                     <button 
-                      onClick={simulateStripeConnect}
-                      className="w-full bg-[#635BFF] hover:bg-white hover:text-[#635BFF] text-white font-black px-6 py-4 uppercase tracking-tighter transition-all"
+                      onClick={completeOnboarding}
+                      disabled={isSubmitting}
+                      className="w-full bg-[#635BFF] hover:bg-white hover:text-[#635BFF] text-white font-black px-6 py-4 uppercase tracking-tighter transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                     >
-                      Connect with Stripe
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          Finalizing Profile...
+                        </>
+                      ) : (
+                        'Connect with Stripe'
+                      )}
                     </button>
                   </div>
                 </div>
