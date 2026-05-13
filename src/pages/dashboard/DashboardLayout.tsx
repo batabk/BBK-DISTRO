@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { Music, BarChart2, Wallet, LogOut, User } from 'lucide-react';
+import { BrandLogo } from '../../components/BrandLogo';
 
 export function DashboardLayout() {
   const navigate = useNavigate();
@@ -24,9 +25,9 @@ export function DashboardLayout() {
       {/* Sidebar */}
       <aside className="w-64 border-r border-chrome/10 bg-obsidian/50 flex flex-col justify-between">
         <div className="p-6">
-          <Link to="/dashboard" className="flex items-center gap-2 mb-12">
-            <div className="w-8 h-8 bg-neon flex items-center justify-center font-black text-obsidian">B</div>
-            <span className="font-bold tracking-tighter text-xl italic hover:text-neon transition">BBK DISTRO</span>
+          <Link to="/dashboard" className="flex items-center gap-3 mb-12 group">
+            <BrandLogo size="sm" />
+            <span className="font-bold tracking-tighter text-xl italic group-hover:text-neon transition">BBK DISTRO</span>
           </Link>
           
           <nav className="space-y-2">

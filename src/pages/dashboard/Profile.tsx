@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { getProfile, updateProfile, ProfileData } from '../../lib/profile';
-import { Save, UserCircle, Upload } from 'lucide-react';
+import { Save, UserCircle, Upload, AlertCircle } from 'lucide-react';
 
 export function Profile() {
   const [loading, setLoading] = useState(true);
@@ -20,27 +20,35 @@ export function Profile() {
   });
 
   useEffect(() => {
-    fetchProfileData();
+    if (isSupabaseConfigured()) {
+      fetchProfileData();
+    } else {
+      setLoading(false);
+      setMessage({ 
+        type: 'error', 
+        text: 'Supabase configuration missing. Please provide VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.' 
+      });
+    }
   }, []);
 
   const fetchProfileData = async () => {
     try {
       setLoading(true);
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      const { data, error: userError } = await supabase.auth.getUser();
+      if (userError || !data.user) return;
 
-      const data = await getProfile(user.id);
+      const profile = await getProfile(data.user.id);
 
-      if (data) {
+      if (profile) {
         setFormData({
-          stage_name: data.stage_name || '',
-          real_name: data.real_name || '',
-          bio: data.bio || '',
-          spotify_uri: data.spotify_uri || '',
-          instagram: data.instagram || '',
-          genre: data.genre || '',
-          gender: data.gender || '',
-          avatar_url: data.avatar_url || '',
+          stage_name: profile.stage_name || '',
+          real_name: profile.real_name || '',
+          bio: profile.bio || '',
+          spotify_uri: profile.spotify_uri || '',
+          instagram: profile.instagram || '',
+          genre: profile.genre || '',
+          gender: profile.gender || '',
+          avatar_url: profile.avatar_url || '',
         });
       }
     } catch (error: any) {

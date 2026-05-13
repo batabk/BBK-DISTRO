@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { AntiGravityWaveform } from "../../components/AntiGravityWaveform";
 import { DSPTicker } from "../../components/DSPTicker";
 import { ChevronRight, Zap, Globe, ShieldCheck } from "lucide-react";
+import { BrandLogo } from "../../components/BrandLogo";
 
 export function LandingPage() {
   return (
@@ -11,8 +12,8 @@ export function LandingPage() {
       {/* Navigation Layer */}
       <nav className="fixed top-0 w-full z-50 border-b border-white/10 bg-obsidian/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-neon flex items-center justify-center font-black text-obsidian">B</div>
+          <div className="flex items-center gap-3">
+            <BrandLogo size="sm" />
             <span className="font-bold tracking-tighter text-2xl italic">BBK DISTRO</span>
           </div>
           <div className="hidden md:flex gap-8 items-center text-xs font-semibold tracking-widest uppercase">
@@ -146,8 +147,11 @@ export function LandingPage() {
         </section>
       </main>
 
-      <footer className="border-t border-chrome/10 py-12 text-center text-chrome/60 text-sm">
-        <div className="mb-4 space-x-6">
+      <footer className="border-t border-chrome/10 py-16 text-center text-chrome/60 text-sm">
+        <div className="flex flex-col items-center mb-8">
+          <BrandLogo size="lg" showTagline={true} />
+        </div>
+        <div className="mb-4 space-x-6 uppercase tracking-widest text-[10px] font-bold">
           <a href="#" className="hover:text-pure transition">Terms</a>
           <a href="#" className="hover:text-pure transition">Privacy</a>
           <a href="#" className="hover:text-pure transition">Help Center</a>

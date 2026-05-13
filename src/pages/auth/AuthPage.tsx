@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
-import { Zap } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import { Zap, AlertTriangle } from 'lucide-react';
+import { BrandLogo } from '../../components/BrandLogo';
 
 export function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(true);
@@ -12,8 +13,16 @@ export function AuthPage() {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!isSupabaseConfigured()) {
+      setError('Supabase is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.');
+    }
+  }, []);
+
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isSupabaseConfigured()) return;
+    
     setLoading(true);
     setError(null);
 
@@ -47,8 +56,8 @@ export function AuthPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <div className="flex items-center gap-2 justify-center mb-10">
-            <div className="w-8 h-8 bg-neon flex items-center justify-center font-black text-obsidian">B</div>
+          <div className="flex items-center gap-3 justify-center mb-10">
+            <BrandLogo size="sm" />
             <span className="font-bold tracking-tighter text-2xl italic">BBK DISTRO</span>
           </div>
 

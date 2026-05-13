@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, Music, Wallet, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
 import { updateProfile } from '../../lib/profile';
 import { supabase } from '../../lib/supabase';
+import { BrandLogo } from '../../components/BrandLogo';
 
 export function OnboardingFlow() {
   const [step, setStep] = useState(1);
@@ -59,9 +60,12 @@ export function OnboardingFlow() {
     <div className="min-h-screen bg-obsidian text-pure font-sans flex flex-col justify-center items-center p-6 grid-lines">
       <div className="w-full max-w-2xl">
         <div className="mb-12 flex items-center justify-between">
-          <h1 className="text-3xl font-display font-black tracking-tighter uppercase">
-            Artist Configuration
-          </h1>
+          <div className="flex items-center gap-4">
+            <BrandLogo size="md" />
+            <h1 className="text-3xl font-display font-black tracking-tighter uppercase">
+              Artist Configuration
+            </h1>
+          </div>
           <div className="flex gap-2">
             {[1, 2, 3].map(i => (
               <div 
